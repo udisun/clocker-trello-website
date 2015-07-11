@@ -1,5 +1,12 @@
 <div class="main container card content">
   <h1>Things</h1>
+
+  <div>
+    <button class="btn btn--xl btn--blue btn--raised" lx-ripple
+      ng-click="connectTrello()">Connect to Trello</button>
+  </div>
+
+
   <form ng-submit="save()" name="form" novalidate="" class="thing-form">
     <div flex-container="row" flex-gutter="24">
       <div flex-item>
@@ -17,15 +24,17 @@
 
       <div flex-item>
         <div class="card">
-          <lx-select placeholder="Sort" choices="['Ascending', 'Descending']" floating-label>
-              <lx-select-selected ng-click="orderProperty=($choice === 'Ascending' ? '1' : '-1')">
-                  {{ orderProperty==='1' ? 'Ascending' : 'Descending' }}
-              </lx-select-selected>
-
-              <lx-select-choices>
-                  {{ $choice }}
-              </lx-select-choices>
-          </lx-select>
+          <lx-dropdown>
+            <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dropdown-toggle>
+                {{ orderProperty==='1' ? 'Ascending' : 'Descending' }}
+            </button>
+            <lx-dropdown-menu>
+              <ul>
+                  <li><a class="dropdown-link" ng-click="orderProperty='1'">Ascending</a></li>
+                  <li><a class="dropdown-link" ng-click="orderProperty='-1'">Descending</a></li>
+              </ul>
+            </lx-dropdown-menu>
+          </lx-dropdown>
         </div>
       </div>
     </div>
@@ -33,15 +42,6 @@
   </form>
   <div class="panel panel-default">
     <div class="panel-body">
-      <div class="input-group pull-right col-md-3 col-sm-12">
-        <div dropdown="" on-toggle="toggled(open)" class="dropdown input-group-btn">
-          <button dropdown-toggle="" class="btn btn-primary dropdown-toggle">{{ orderProperty==='1' ? 'Ascending' : 'Descending' }}<span class="caret"></span></button>
-          <ul role="menu" class="dropdown-menu">
-            <li ng-click="orderProperty='1'">Ascending</li>
-            <li ng-click="orderProperty='-1'">Descending</li>
-          </ul>
-        </div>
-      </div>
       <ul class="nav nav-tabs nav-stacked col-md-9 col-sm-12">
         <li dir-paginate="thing in things | itemsPerPage: perPage" total-items="thingsCount.count">
           <p>{{ thing.name }}
