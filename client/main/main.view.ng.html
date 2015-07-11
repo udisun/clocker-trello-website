@@ -1,0 +1,56 @@
+<div class="main container card content">
+  <h1>Things</h1>
+  <form ng-submit="save()" name="form" novalidate="" class="thing-form">
+    <div flex-container="row" flex-gutter="24">
+      <div flex-item>
+          <lx-text-field label="Name">
+              <input type="text" ng-model="newThing.name">
+          </lx-text-field>
+      </div>
+      <button class="btn inline-button btn--m btn--blue btn--fab" lx-ripple><i class="mdi mdi-plus"></i></button>
+
+      <div flex-item>
+        <div class="card">
+          <lx-search-filter model="search" filter-width="100%" placeholder="Search"></lx-search-filter>
+        </div>
+      </div>
+
+      <div flex-item>
+        <div class="card">
+          <lx-select placeholder="Sort" choices="['Ascending', 'Descending']" floating-label>
+              <lx-select-selected ng-click="orderProperty=($choice === 'Ascending' ? '1' : '-1')">
+                  {{ orderProperty==='1' ? 'Ascending' : 'Descending' }}
+              </lx-select-selected>
+
+              <lx-select-choices>
+                  {{ $choice }}
+              </lx-select-choices>
+          </lx-select>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="input-group pull-right col-md-3 col-sm-12">
+        <div dropdown="" on-toggle="toggled(open)" class="dropdown input-group-btn">
+          <button dropdown-toggle="" class="btn btn-primary dropdown-toggle">{{ orderProperty==='1' ? 'Ascending' : 'Descending' }}<span class="caret"></span></button>
+          <ul role="menu" class="dropdown-menu">
+            <li ng-click="orderProperty='1'">Ascending</li>
+            <li ng-click="orderProperty='-1'">Descending</li>
+          </ul>
+        </div>
+      </div>
+      <ul class="nav nav-tabs nav-stacked col-md-9 col-sm-12">
+        <li dir-paginate="thing in things | itemsPerPage: perPage" total-items="thingsCount.count">
+          <p>{{ thing.name }}
+            <button ng-click="remove(thing)" class="btn">&times;</button>
+          </p>
+        </li>
+      </ul>
+      <dir-pagination-controls on-page-change="pageChanged(newPageNumber)" class="col-md-12"></dir-pagination-controls>
+    </div>
+  </div>
+  <p>Total number of things: {{thingsCount.count}}</p>
+</div>
