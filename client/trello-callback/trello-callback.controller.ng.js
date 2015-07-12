@@ -1,23 +1,4 @@
 'use strict'
-Template.loading.rendered = function () {
-  if ( ! Session.get('loadingSplash') ) {
-    this.loading = window.pleaseWait({
-      logo: '/images/Meteor-logo.png',
-      backgroundColor: '#7f8c8d',
-      loadingHtml: message + spinner
-    });
-    Session.set('loadingSplash', true); // just show loading splash once
-  }
-};
-
-Template.loading.destroyed = function () {
-  if ( this.loading ) {
-    this.loading.finish();
-  }
-};
-
-var message = '<p class="loading-message">Loading Message</p>';
-var spinner = '<div class="sk-spinner sk-spinner-rotating-plane"></div>';
 
 angular.module('meteorApp')
 .controller('TrelloCallBackCtrl', function($scope) {
@@ -27,11 +8,11 @@ angular.module('meteorApp')
 
 
   console.log('controller');
-  // Meteor.call('trelloAccessToken', function(err, data) {
-  //   if (err) {
-  //     console.log(err);
-  //   }
+  Meteor.call('trelloAccessToken', function(err, data) {
+    if (err) {
+      console.log(err);
+    }
 
-  //   console.log(data);
-  // });
+    console.log(data);
+  });
 });

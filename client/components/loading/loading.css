@@ -5,6 +5,8 @@
   font-family: sans-serif;
 }
 
-.sk-spinner-rotating-plane.sk-spinner {
+.sk-spinner-rotating-plane.sk-spinner,
+.sk-spinner-chasing-dots.sk-spinner .sk-dot1,
+.sk-spinner-chasing-dots.sk-spinner .sk-dot2 {
   background-color: #fff;
 }
