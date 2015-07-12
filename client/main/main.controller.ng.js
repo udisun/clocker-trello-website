@@ -21,22 +21,14 @@ angular.module('meteorApp')
     });
   });
 
-  vm.connectTrello = function() {
-    //&oauth_token=f714c8ecc73c6689bfc67e9966c6afa9
-    //$window.location.href = 'https://trello.com/1/authorize?key=6af5f1835de662abe13eaeca6258fbcb&name=Clocker&expiration=never&scope=read,account&response_type=token';
-    //'https://trello.com/1/OAuthAuthorizeToken?name=Clocker&scope=read%2Caccount&expiration=never';
-//console.log($meteor);
-//console.log(Meteor);
-    // Meteor.loginWithTrello({'type': 'redirect'}, function(token) {
-    //   console.log(token);
-    // });
-
-    Meteor.call('connect', function(err, data) {
+  vm.trelloConnect = function() {
+    Meteor.call('trelloConnect', function(err, data) {
       if (err) {
         console.log(err);
       }
 
       console.log(data);
+      $window.location.href = data;
     });
   }
 
