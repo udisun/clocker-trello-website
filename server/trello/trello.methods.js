@@ -3,57 +3,47 @@ var key = "6af5f1835de662abe13eaeca6258fbcb";
 var secret = "21ff9e1258f0bbd6353aaaf10e509ee4235bbe00c7806da1c4496d9f3d36571b";
 var loginCallback = "https://clocker-website-udisun.c9.io/trello-callback"
 
+var OAuth = Package.oauth.OAuth;
 var Trello = Meteor.npmRequire("node-trello");
 var trelloOAuth = new Trello.OAuth(key, secret, loginCallback, 'Clocker');
 
 Meteor.methods({
   trelloConnect: function() {
-    //var PendingCredential = new Mongo.Collection("meteor_oauth_pendingCredentials");
     var getRequestTokenSync = Meteor.wrapAsync(trelloOAuth.getRequestToken, trelloOAuth);
 
     var requestTokenBag = getRequestTokenSync();
-    //console.log(requestTokenBag);
     var urlParts = [requestTokenBag.redirect, 'expiration=never', 'scope=read,account'];
 
-    //console.log(Meteor.user().services);
-
-    var userId = Meteor.userId();
-    // We do an upsert here instead of an insert in case the user happens
-    // to somehow send the same `state` parameter twice during an OAuth
-    // login; we don't want a duplicate key error.
-    // PendingCredential.upsert({
-    //   key: userId
-    // }, {
-    //   key: userId,
-    //   credential: requestTokenBag.oauth_token,
-    //   credentialSecret: requestTokenBag.oauth_token_secret || null,
-    //   createdAt: new Date()
-    // });
+    OAuth._storePendingCredential(requestTokenBag.oauth_token, requestTokenBag.oauth_token_secret);
 
     return urlParts.join('&');
   },
-  trelloAccessToken: function() {
-    //var PendingCredential = new Meteor.Collection("meteor_oauth_pendingCredentials");
-    //console.log(PendingCredential.find());
-// var token = bag.oauth_token;
-//   var tokenSecret = bag.oauth_token_secret;
-//   var verifier = bag.oauth_verifier;
+  trelloAccessToken: function(oauth_token, oauth_verifier) {
+    var oauth_token_secret = OAuth._retrievePendingCredential(oauth_token);
+    var getAccessTokenSync = Meteor.wrapAsync(trelloOAuth.getAccessToken, trelloOAuth);
 
-    // var getAccessTokenSync = Meteor.wrapAsync(trelloOAuth.getAccessToken, trelloOAuth);
+    var bag = {
+      oauth_token: oauth_token,
+      oauth_token_secret: oauth_token_secret,
+      oauth_verifier: oauth_verifier
+    };
+    var trelloAccessBag = getAccessTokenSync(bag);
 
-    // var accessToken = getAccessTokenSync();
-    // console.log(accessToken);
+    // Update the current user
+    if (!Meteor.userId()) {
+      throw new Meteor.Error("logged-out", "The user must be logged in to connect to Trello.");
+    }
 
-    // return accessToken;
+    Meteor.users.update( { _id: Meteor.userId() }, { $set: { 'trelloToken': trelloAccessBag }} );
+    return true;
+  },
+  trelloGetMe: function() {
+    var token = Meteor.users.find( { _id: Meteor.userId() }, { 'trelloToken.oauth_access_token': 1 } );
+    var t = new Trello(key, token);
+    t.get("/1/members/me", function(err, data) {
+      if (err) throw err;
+      console.log(data);
+      return data
+    });
   }
 });
-//var t = new Trello(key);
-  // },
-  // getMe: function() {
-  //   var Trello = Meteor.npmRequire('node-trello');
-  //   var t = new Trello('6af5f1835de662abe13eaeca6258fbcb');
-  //   t.get("/1/members/me", function(err, data) {
-  //     if (err) throw err;
-  //     console.log(data);
-  //   });
-  // }

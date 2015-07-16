@@ -22,13 +22,13 @@ angular.module('meteorApp')
   });
 
   vm.trelloConnect = function() {
-    Meteor.call('trelloConnect', function(err, data) {
+    Meteor.call('trelloConnect', function(err, url) {
       if (err) {
         console.log(err);
       }
 
-      console.log(data);
-      $window.location.href = data;
+      console.log(url);
+      $window.location.href = url;
     });
   }
 

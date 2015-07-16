@@ -12,7 +12,6 @@ tmeasday:publish-counts
 aldeed:collection2
 angularutils:pagination
 accounts-password
-accounts-twitter
 accounts-facebook
 accounts-google
 accounts-ui
@@ -23,6 +22,5 @@ meteorhacks:npm
 
 
 npm-container
-mrt:accounts-trello
 pcel:loading
 http
