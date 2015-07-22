@@ -32,6 +32,12 @@ angular.module('meteorApp')
     });
   }
 
+  vm.trelloGetMe = function() {
+    Meteor.call('trelloGetMe', function(err, data) {
+      console.log(err, data);
+    });
+  }
+
   vm.save = function() {
     if(vm.form.$valid) {
       vm.things.save(vm.newThing);

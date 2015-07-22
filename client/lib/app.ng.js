@@ -3,7 +3,8 @@ angular.module('meteorApp', [
   'ui.router',
   'angularUtils.directives.dirPagination',
   'formly',
-  'lumx'
+  'lumx',
+  'mgo-angular-wizard'
 ]);
 
 onReady = function() {

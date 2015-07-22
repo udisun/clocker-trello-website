@@ -1,7 +1,7 @@
 //console.log(meteor_oauth_pendingCredentials);
-var key = "6af5f1835de662abe13eaeca6258fbcb";
-var secret = "21ff9e1258f0bbd6353aaaf10e509ee4235bbe00c7806da1c4496d9f3d36571b";
-var loginCallback = "https://clocker-website-udisun.c9.io/trello-callback"
+var key = Meteor.settings.trelloDevKey;
+var secret = Meteor.settings.trelloDevSecret;
+var loginCallback = Meteor.settings.public.trelloLoginCallback;
 
 var OAuth = Package.oauth.OAuth;
 var Trello = Meteor.npmRequire("node-trello");
@@ -27,6 +27,8 @@ Meteor.methods({
       oauth_token_secret: oauth_token_secret,
       oauth_verifier: oauth_verifier
     };
+
+    console.log(bag);
     var trelloAccessBag = getAccessTokenSync(bag);
 
     // Update the current user
@@ -37,13 +39,47 @@ Meteor.methods({
     Meteor.users.update( { _id: Meteor.userId() }, { $set: { 'trelloToken': trelloAccessBag }} );
     return true;
   },
-  trelloGetMe: function() {
-    var token = Meteor.users.find( { _id: Meteor.userId() }, { 'trelloToken.oauth_access_token': 1 } );
+  trelloGetToken: function() {
+    return Meteor.users.find(
+      {_id: Meteor.userId() }, 
+      { 'trelloToken.oauth_access_token': 1, '_id': 0}
+    ).map(
+      function(u) { 
+        return u.trelloToken.oauth_access_token; 
+      }
+    )[0];
+  },
+  trelloGet: function(url, batch) {
+    var token = Meteor.call('trelloGetToken');
     var t = new Trello(key, token);
-    t.get("/1/members/me", function(err, data) {
-      if (err) throw err;
-      console.log(data);
-      return data
-    });
+
+    var getSync = Meteor.wrapAsync(t.get, t);
+    return getSync('/1' + (batch ? '/batch?urls=' : '') + url);
+  },
+  trelloGetMe: function() {
+    var data = Meteor.call('trelloGet', '/members/me');
+    var orgUrls = data.idOrganizations;
+    var organizations = Meteor.call('trelloGetOrganizations', orgUrls);
+
+    // _.each(organizations, function(organization) {
+    //   var org = organization[200];
+    //   //console.log(Meteor);
+    //   //console.log(Mongo);
+    //   Mongo.organization.upsert({ 'trello.id': org.id }, {
+    //     'name': org.displayName,
+    //     'trello.id': org.id,
+    //     'trello.name': org.name,
+    //     'trello.url': org.url
+    //   });
+    // });
+
+    return organizations;
+  },
+  trelloGetOrganizations: function(idOrganizations) {
+    var urls = _.map(idOrganizations, function(orgId) { return '/organizations/' + orgId }).join();
+    var data = Meteor.call('trelloGet', urls, true);
+
+    console.log(data);
+    return data;
   }
 });

@@ -5,10 +5,32 @@
     <meteor-include src="loginButtons"></meteor-include>
   </div>
 
-  <div>
+  <p>
     <button class="btn btn--xl btn--blue btn--raised" lx-ripple
       ng-click="trelloConnect()">Connect to Trello</button>
-  </div>
+  </p>
+
+  <p>
+    <button class="btn btn--xl btn--blue btn--raised" lx-ripple
+      ng-click="trelloGetMe()">Get My Trello Details</button>
+  </p>
+
+  <wizard on-finish="finishedWizard()"> 
+    <wz-step title="Starting">
+        <h1>This is the first step</h1>
+        <p>Here you can use whatever you want. You can use other directives, binding, etc.</p>
+        <input type="submit" wz-next value="Continue" />
+    </wz-step>
+    <wz-step title="Continuing">
+        <h1>Continuing</h1>
+        <p>You have continued here!</p>
+        <input type="submit" wz-next value="Go on" />
+    </wz-step>
+    <wz-step title="More steps">
+        <p>Even more steps!!</p>
+        <input type="submit" wz-next value="Finish now" />
+    </wz-step>
+  </wizard>
 
 
   <form ng-submit="save()" name="form" novalidate="" class="thing-form">

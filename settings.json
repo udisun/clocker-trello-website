@@ -1,0 +1,8 @@
+{
+  "public": {
+    "trelloLoginCallback": "http://localhost:3000/trello-callback",
+    "environment": "development"
+  },
+  "trelloDevKey": "6af5f1835de662abe13eaeca6258fbcb",
+  "trelloDevSecret": "21ff9e1258f0bbd6353aaaf10e509ee4235bbe00c7806da1c4496d9f3d36571b"
+}
