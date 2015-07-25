@@ -1,0 +1,13 @@
+{
+  "libs": [
+    "browser",
+    "ecma5",
+    "jquery"
+  ]
+  "plugins": {
+    "complete_strings": {},
+    "node": {},
+    "lint": {},
+    "angular": {}    
+  }
+}

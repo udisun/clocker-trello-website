@@ -25,3 +25,4 @@ npm-container
 pcel:loading
 http
 barbatus:angular-wizard
+iron:router

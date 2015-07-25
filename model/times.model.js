@@ -20,15 +20,13 @@ SimpleSchema.extendOptions({
 Times.attachSchema(new SimpleSchema({
   title: {
     type: String,
-    label: "What have you done?",
     max: 100,
     formly: {
       key: 'title',
       type: 'lx-input',
-      wrapper: 'lx-wrapper-inline',
       templateOptions: {
         type: 'text',
-        label: 'First Name',
+        label: 'Task Name',
         required: true
       },
       validation: {
@@ -40,30 +38,33 @@ Times.attachSchema(new SimpleSchema({
     }
   },
   project: {
-    type: Object,
-    label: "Project",
+    type: String,
     optional: true,
     formly: {
-      key: 'project',
-      type: 'lx-input',
-      wrapper: 'lx-wrapper-inline',
+      key: 'client',
+      type: 'lx-select',
       templateOptions: {
-        type: 'text',
-        label: 'Project',
-        required: false
+        label: 'Client',
+        placeholder: 'Choose a Client',
+        selected: 'name',
+        choice: 'name',
+        required: true,
+        options: []
       }
     }
   },
   time: {
-    type: Date,
-    label: "Time",
-    optional: true,
+    type: String,
     formly: {
       key: 'date',
-      type: 'lx-date-picker',
-      wrapper: 'lx-wrapper-inline',
+      type: 'lx-input',
       templateOptions: {
         label: 'Time',
+        onFocus: function($viewValue, $modelValue, scope) {
+          $(".time-date").show().css("opacity", "1");
+          window.center($(".time-date"));
+          console.log('The key was pressed!', $viewValue);
+        },
         required: true
       }
     }

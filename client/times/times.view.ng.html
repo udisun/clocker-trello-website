@@ -1,16 +1,29 @@
 <div class="container">
 
 	<h1>This is the {{ viewName }} view</h1>
+
 	<div class="panel panel-default">
 		<div class="panel-body">
 
 			<form ng-submit="timeFormSubmit()" novalidate>
 		    <h1>Enter Time</h1>
 		    <formly-form model="timeForm" fields="timeFields" form="timeForm">
+						<time-date-picker ng-model="dateValue"></time-date-picker>
 		        <button type="submit" class="btn btn-primary" ng-disabled="timeForm.$invalid">Submit</button>
 		    </formly-form>
 		</form>
 
+
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<ul>
+				<li ng-repeat="org in organizations">
+				  <p>{{org}}</p>
+				</li>
+			</ul>
 
 		</div>
 	</div>

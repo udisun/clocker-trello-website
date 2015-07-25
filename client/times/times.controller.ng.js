@@ -11,22 +11,17 @@ angular.module('meteorApp')
   // The model object that we reference
   // on the  element in index.html
   vm.timeForm = {};
-  
+
   // An array of our form fields with configuration
   // and options set. We make reference to this in
   // the 'fields' attribute on the  element
   vm.timeFields = [];
-  vm.timeFields = _.compact(_.pluck(Times._c2._simpleSchema._schema, 'formly'));
-  console.log(vm.timeFields);
-  // _.each(Times._c2._simpleSchema._schema, function(value, key, list) {
-  // 	console.log(value);
-  // 	if (typeof value.formly !== 'undefined') {
-  // 		vm.timeFields.push(value.formly);
-  // 	}
-  // });
+  vm.timeFields = _.compact(_.pluck(Times._c2._simpleSchema._schema, 'formly'));	
 
-  //console.log(vm.rentalFields);
-  
+	$meteor.subscribe('organizations');
+	var organizations = $meteor.collection(Organizations);
+	var clients = _.findWhere(vm.timeFields, { key: 'client' })
+	clients.templateOptions.options = organizations;
 
   vm.timeFormSubmit = function() {
     if($scope.timeForm.$valid) {

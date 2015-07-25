@@ -1,6 +1,7 @@
 {
   "public": {
     "trelloLoginCallback": "http://localhost:3000/trello-callback",
+    "trelloWebhookCallback": "http://localhost:3000/webhooks/trello",
     "environment": "development"
   },
   "trelloDevKey": "6af5f1835de662abe13eaeca6258fbcb",
