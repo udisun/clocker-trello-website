@@ -1,6 +1,8 @@
 <div class="main container card content">
   <h1>Things</h1>
 
+  <a ng-click="goto('times');">Times</a>
+
   <div>
     <meteor-include src="loginButtons"></meteor-include>
   </div>
@@ -15,7 +17,7 @@
       ng-click="trelloGetMe()">Get My Trello Details</button>
   </p>
 
-  <wizard on-finish="finishedWizard()"> 
+  <!-- <wizard on-finish="finishedWizard()"> 
     <wz-step title="Starting">
         <h1>This is the first step</h1>
         <p>Here you can use whatever you want. You can use other directives, binding, etc.</p>
@@ -30,7 +32,7 @@
         <p>Even more steps!!</p>
         <input type="submit" wz-next value="Finish now" />
     </wz-step>
-  </wizard>
+  </wizard> -->
 
 
   <form ng-submit="save()" name="form" novalidate="" class="thing-form">

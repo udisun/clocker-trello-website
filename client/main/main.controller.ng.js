@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('meteorApp')
-.controller('MainCtrl', function($scope, $meteor, $window) {
+.controller('MainCtrl', function($scope, $meteor, $state, $window) {
   var vm = $scope;
   vm.page = 1;
   vm.perPage = 3;
@@ -52,6 +52,10 @@ angular.module('meteorApp')
   vm.pageChanged = function(newPage) {
     vm.page = newPage;
   };
+
+  vm.goto = function(state) {
+    $state.go(state);
+  }
 
   vm.$watch('orderProperty', function() {
     if(vm.orderProperty) {

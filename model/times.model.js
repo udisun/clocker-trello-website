@@ -24,12 +24,18 @@ Times.attachSchema(new SimpleSchema({
     max: 100,
     formly: {
       key: 'title',
-      type: 'input',
+      type: 'lx-input',
+      wrapper: 'lx-wrapper-inline',
       templateOptions: {
         type: 'text',
         label: 'First Name',
-        placeholder: 'What have you done?',
         required: true
+      },
+      validation: {
+        messages: {}
+      },
+      modelOptions: {
+        allowInvalid: false
       }
     }
   },
@@ -39,11 +45,11 @@ Times.attachSchema(new SimpleSchema({
     optional: true,
     formly: {
       key: 'project',
-      type: 'input',
+      type: 'lx-input',
+      wrapper: 'lx-wrapper-inline',
       templateOptions: {
         type: 'text',
         label: 'Project',
-        placeholder: 'Whats the project name?',
         required: false
       }
     }
@@ -54,11 +60,10 @@ Times.attachSchema(new SimpleSchema({
     optional: true,
     formly: {
       key: 'date',
-      type: 'input',
+      type: 'lx-date-picker',
+      wrapper: 'lx-wrapper-inline',
       templateOptions: {
-        type: 'date',
         label: 'Time',
-        placeholder: '',
         required: true
       }
     }

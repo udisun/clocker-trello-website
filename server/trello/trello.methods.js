@@ -28,7 +28,6 @@ Meteor.methods({
       oauth_verifier: oauth_verifier
     };
 
-    console.log(bag);
     var trelloAccessBag = getAccessTokenSync(bag);
 
     // Update the current user
@@ -59,27 +58,53 @@ Meteor.methods({
   trelloGetMe: function() {
     var data = Meteor.call('trelloGet', '/members/me');
     var orgUrls = data.idOrganizations;
-    var organizations = Meteor.call('trelloGetOrganizations', orgUrls);
+    var organizations = Meteor.call('trelloGetOrganizations', orgUrls); 
+    Meteor.call('trelloSetOrganizations', organizations);
 
-    // _.each(organizations, function(organization) {
-    //   var org = organization[200];
-    //   //console.log(Meteor);
-    //   //console.log(Mongo);
-    //   Mongo.organization.upsert({ 'trello.id': org.id }, {
-    //     'name': org.displayName,
-    //     'trello.id': org.id,
-    //     'trello.name': org.name,
-    //     'trello.url': org.url
-    //   });
-    // });
+    var boardsUrls = data.idBoards;
+    var boards = Meteor.call('trelloGetBoards', boardsUrls); 
+    Meteor.call('trelloSetBoards', boards);
 
-    return organizations;
+    return data;
   },
   trelloGetOrganizations: function(idOrganizations) {
     var urls = _.map(idOrganizations, function(orgId) { return '/organizations/' + orgId }).join();
     var data = Meteor.call('trelloGet', urls, true);
 
-    console.log(data);
     return data;
+  },
+  trelloGetBoards: function(idBoards) {
+    var urls = _.map(idBoards, function(boardId) { return '/boards/' + boardId }).join();
+    var data = Meteor.call('trelloGet', urls, true);
+
+    return data;
+  },
+  trelloSetOrganizations: function(organizations) {
+    _.each(organizations, function(value, key, list) {
+      var org = value[200];
+    
+      Organizations.upsert({ "trello.id": org.id }, {
+        'name': org.displayName,
+        'trello': {
+          'id': org.id,
+          'name': org.name,
+          'url': org.url
+        }
+      }, { 'validate': false });
+    });
+  },
+  trelloSetBoards: function(boards) {
+    _.each(boards, function(value, key, list) {
+      var board = value[200];
+    
+      Boards.upsert({ "trello.id": board.id }, {
+        'trello': {
+          'id': board.id,
+          'idOrganization': board.idOrganization,
+          'name': board.name,
+          'url': board.url
+        }
+      }, { 'validate': false });
+    });
   }
 });

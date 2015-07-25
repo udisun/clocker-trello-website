@@ -2,8 +2,11 @@ angular.module('meteorApp', [
   'angular-meteor',
   'ui.router',
   'angularUtils.directives.dirPagination',
+  'ngMessages',
+  'ngAria',
   'formly',
   'lumx',
+  'formlyLumx',
   'mgo-angular-wizard'
 ]);
 

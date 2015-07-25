@@ -10,5 +10,7 @@
     "test",
     "tests"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "angular-formly-templates-lumx": "~1.5.2"
+  }
 }

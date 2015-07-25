@@ -1,6 +1,6 @@
-Organizations = new Mongo.Collection('organizations');
+Boards = new Mongo.Collection('boards');
 
-Organizations.allow({
+Boards.allow({
   insert: function(userId, time) {
     return true;
   },
@@ -17,16 +17,14 @@ SimpleSchema.extendOptions({
   formly: Match.Optional(Match.Any)
 });
 
-Organizations.attachSchema(new SimpleSchema({
-  name: {
-    type: String,
-    label: "Organization Name?",
-    max: 100
-  },
+Boards.attachSchema(new SimpleSchema({
   "trello.name": {
   	type: String
   },
   "trello.id": {
+    type: String
+  },
+  "trello.idOrganization": {
     type: String
   },
   "trello.url": {

@@ -16,12 +16,14 @@ angular.module('meteorApp')
   // and options set. We make reference to this in
   // the 'fields' attribute on the  element
   vm.timeFields = [];
-  _.each(Times._c2._simpleSchema._schema, function(value, key, list) {
-  	console.log(value);
-  	if (typeof value.formly !== 'undefined') {
-  		vm.timeFields.push(value.formly);
-  	}
-  });
+  vm.timeFields = _.compact(_.pluck(Times._c2._simpleSchema._schema, 'formly'));
+  console.log(vm.timeFields);
+  // _.each(Times._c2._simpleSchema._schema, function(value, key, list) {
+  // 	console.log(value);
+  // 	if (typeof value.formly !== 'undefined') {
+  // 		vm.timeFields.push(value.formly);
+  // 	}
+  // });
 
   //console.log(vm.rentalFields);
   
